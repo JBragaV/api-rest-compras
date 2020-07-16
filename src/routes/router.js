@@ -1,8 +1,9 @@
+const express = require('express');
 
+const rota = express.Router();
 
-module.exports = app =>{
-    app.get('/', (req, res)=> {
-        res.send("Estou funcionando!!!");
-    });
-}
+rota.get('/', (req, res)=> {
+    res.send("Estou funcionando!!!");
+});
 
+module.exports = app => app.use('/', rota);

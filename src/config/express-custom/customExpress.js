@@ -8,8 +8,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-consign().include('./src/routes').into(app);
+//consign().include('./src/routes').into(app);
 
+require('../../routes/router')(app);
 require('../../controllers/authController')(app);
 
 module.exports = app;
