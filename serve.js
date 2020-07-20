@@ -1,5 +1,5 @@
 const app = require('./src/config/express-custom/customExpress')
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 
 app.listen(PORT, (res, resp) =>{
