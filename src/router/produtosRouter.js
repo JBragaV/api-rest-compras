@@ -1,18 +1,12 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
-const authConf = require('../config/auth/auth.json');
+const authMiddleware = require('../midleware/auth');
+
 const itensControler = require('../controllers/itensControlle');
 
 const router = express.Router();
 
-function generateToken(params = {}){
-    return jwt.sign(params, authConf.secret, {
-        expiresIn: 7200
-    })
-}
-
+router.use(authMiddleware);
 router.post('/register', itensControler.adicionar);
 router.get('/', itensControler.listar);
 router.get('/:itemId', itensControler.listarItem);

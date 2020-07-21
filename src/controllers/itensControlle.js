@@ -23,7 +23,9 @@ module.exports = {
         try{
             const { page=1 } = req.query;
             const items = await knex("produtos")
-                .limit(2).offset((page - 1)*2).select()
+                .limit(10).offset((page - 1)*10).select()
+                .join('users', 'users.id', "=", "produtos.user_id")
+                .select("produtos.*", "users.nome")
             
             const [ count ] = await knex("produtos").count();
             res.header("X-Total-Count", count["count(*)"]);

@@ -1,6 +1,16 @@
 const knex = require('../config/db');
 const bcrypt = require('bcrypt');
 
+const jwt = require('jsonwebtoken');
+
+const authConf = require('../config/auth/auth.json');
+
+function generateToken(params = {}){
+    return jwt.sign(params, authConf.secret, {
+        expiresIn: 7200
+    })
+}
+
 module.exports = {
 
     async addUser(req, res, next) {
@@ -63,6 +73,28 @@ module.exports = {
         } catch (error) {
             console.log(error);
             next(error);
+        }
+    },
+
+    async login(req, res, next) {
+        try {
+            const { nome, senha } = req.body;
+        
+            const user = await knex("users").select("id", "nome", "senha").where({nome});
+            
+            
+            if(!user) return res.status(400).send({Erro: "Usuário não encontrado"});
+        
+            if(!await bcrypt.compare(senha, user[0].senha)) return res.status(400).send({Erro: "Senha incorreta!!!"});
+            
+            //user.senha = undefined;
+            //console.log("Até aqui está rodando bem!!!");
+            //res.send({ user });
+            res.send({ user, token: generateToken({id: user[0].id}) })
+            
+        } catch (error) {
+           console.log(error);
+           next(error); 
         }
     }
 }
