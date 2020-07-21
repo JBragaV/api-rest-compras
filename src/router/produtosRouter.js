@@ -16,6 +16,7 @@ function generateToken(params = {}){
 router.post('/register', itensControler.adicionar);
 router.get('/', itensControler.listar);
 router.get('/:itemId', itensControler.listarItem);
+router.get('/user/:userId', itensControler.listarItemUsuario);
 router.put('/:itemId', itensControler.atualizar);
 router.delete('/:itemId', itensControler.deletar);
 
